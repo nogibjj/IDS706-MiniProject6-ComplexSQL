@@ -28,7 +28,7 @@ class TestMainMethods(unittest.TestCase):
 
     def test_database_population(self):
         # Test whether data is loaded into MySQL from CSVs correctly
-        main.populate_database_from_csv(self.conn, db_name=self.test_db_name)
+        main.populate_database_from_csv(db_name=self.test_db_name)
 
         cursor = self.conn.cursor()
         cursor.execute("SELECT COUNT(*) FROM customers")
