@@ -140,3 +140,6 @@ dmypy.json
 # ignore ide file
 .idea
 .DS_Store
+
+# ignore password file
+.env
