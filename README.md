@@ -1,6 +1,7 @@
+# Design a complex SQL query for a MySQL database and explain the results
+
 [![CI](https://github.com/nogibjj/python-template/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/python-template/actions/workflows/cicd.yml)
 
-# Design a complex SQL query for a MySQL database and explain the results
 
 ## Goal
 
@@ -33,7 +34,7 @@ project/
 └── test_main.py
 └── .env
 ```
-> NOTE: the .env file is required to hide the MySQL password and added to the .gitignore file.
+> NOTE: the .env file is aimed to hide the MySQL password and added to the .gitignore file.
 
 2. `Python3` or above
 3. `pandas` to manipulate data

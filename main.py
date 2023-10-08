@@ -116,9 +116,9 @@ def display_results(results):
 
 
 if __name__ == "__main__":
-    conn = connect_to_db()
-    create_database(conn)
-    populate_database_from_csv(conn)
-    results = execute_query(conn)
+    connect = connect_to_db()
+    create_database(connect)
+    populate_database_from_csv(connect)
+    results = execute_query(connect)
     display_results(results)
-    conn.close()
+    connect.close()
