@@ -41,7 +41,7 @@ def create_database(conn, db_name='sales_database'):
         exit(1)
 
 
-def populate_database_from_csv(conn, host='localhost',
+def populate_database_from_csv(host='localhost',
                                user='root', db_name='sales_database'):
     """
     Populate the MySQL database with data from CSV files.
@@ -118,7 +118,7 @@ def display_results(results):
 if __name__ == "__main__":
     connect = connect_to_db()
     create_database(connect)
-    populate_database_from_csv(connect)
-    results = execute_query(connect)
-    display_results(results)
+    populate_database_from_csv()
+    final_results = execute_query(connect)
+    display_results(final_results)
     connect.close()
