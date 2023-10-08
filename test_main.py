@@ -7,8 +7,9 @@ class TestMainMethods(unittest.TestCase):
 
     @patch('main.create_engine')
     @patch('main.pd.read_csv')
-    def test_populate_database_from_csv(self, mock_read_csv, mock_create_engine):
-        # Mocking the behavior of create_engine and read_csv
+    @patch('main.config', return_value='dummy_password')  # Add this patch
+    def test_populate_database_from_csv(self, mock_config, mock_read_csv, mock_create_engine):
+        # Mocking the behavior of create_engine, read_csv, and config
         mock_create_engine.return_value = Mock()
         mock_read_csv.return_value = Mock(to_sql=Mock())
 
