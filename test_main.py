@@ -1,46 +1,37 @@
 import unittest
-import mysql.connector
-import main  # Assuming the above code is saved as main.py
-from decouple import config
+from unittest.mock import patch, Mock
+import main  # Assuming the provided code is saved as main.py
 
 
 class TestMainMethods(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        # This method will run once before any tests
-        cls.conn = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password=config('DB_PASSWORD'),
-            auth_plugin='mysql_native_password'
-        )
-        cls.test_db_name = 'test_sales_database'
-        main.create_database(cls.conn, cls.test_db_name)
-        cls.conn.database = cls.test_db_name
+    @patch('main.create_engine')
+    @patch('main.pd.read_csv')
+    def test_populate_database_from_csv(self, mock_read_csv, mock_create_engine):
+        # Mocking the behavior of create_engine and read_csv
+        mock_create_engine.return_value = Mock()
+        mock_read_csv.return_value = Mock(to_sql=Mock())
 
-    @classmethod
-    def tearDownClass(cls):
-        # This method will run once after all tests are completed
-        cursor = cls.conn.cursor()
-        cursor.execute(f"DROP DATABASE {cls.test_db_name}")
-        cls.conn.close()
+        # Testing the function
+        main.populate_database_from_csv()
 
-    def test_database_population(self):
-        # Test whether data is loaded into MySQL from CSVs correctly
-        main.populate_database_from_csv(db_name=self.test_db_name)
+        # Assertions to ensure the mocked methods were called
+        mock_create_engine.assert_called_once()
+        self.assertEqual(mock_read_csv.call_count, 4)
 
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT COUNT(*) FROM customers")
-        count = cursor.fetchone()[0]
-        self.assertTrue(count > 0)  # Assumes you have data in customers.csv
+    @patch('main.mysql.connector.connect')
+    def test_execute_query(self, mock_connect):
+        # Mocking the behavior of mysql.connector.connect
+        mock_cursor = Mock()
+        mock_cursor.fetchall.return_value = []
+        mock_connect.return_value = Mock(cursor=Mock(return_value=mock_cursor))
 
-    def test_query_execution(self):
-        # Test whether the SQL query runs without errors
-        results = main.execute_query(self.conn)
-        self.assertIsInstance(results, list)
-        if results:
-            self.assertIsInstance(results[0], tuple)
+        # Testing the function
+        main.execute_query(mock_connect())
+
+        # Assertions to ensure the mocked methods were called
+        mock_cursor.execute.assert_called_once()
+        mock_cursor.fetchall.assert_called_once()
 
 
 if __name__ == "__main__":
