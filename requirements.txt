@@ -11,6 +11,6 @@ uvicorn==0.18.3
 pandas
 mysql.connector
 sqlalchemy
-decouple
+python-decouple
 
 
